@@ -1,0 +1,22 @@
+# NodeJS Version 16
+FROM node:16.18-buster-slim
+
+RUN apt-get update -y && apt-get install -y openssl
+
+# Copy Dir
+COPY . ./app
+
+# Work to Dir
+WORKDIR /app
+
+# Install Node Package
+RUN npm install --legacy-peer-deps
+RUN npm prisma:migrate 
+
+# Set Env
+ENV NODE_ENV development
+
+EXPOSE 3000
+
+# Cmd script
+CMD ["npm", "run", "dev"]
